@@ -1,10 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, StatusBar as SBar } from 'react-native';
+import Areas from './src/components/Areas';
+import Bar from './src/components/Bar';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <Bar />
+      <Areas />
+      <Bar />
       <StatusBar style="auto" />
     </View>
   );
@@ -13,8 +17,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f00',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: SBar.currentHeight || 0,
   },
 });
