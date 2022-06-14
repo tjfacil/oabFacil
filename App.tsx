@@ -1,7 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, StatusBar as SBar } from 'react-native';
 import Areas from './src/routes/Areas';
 import Questions from './src/routes/Questions';
 import Practice from './src/routes/Practice';
@@ -10,7 +9,7 @@ import { COLORS } from './src/utils/constants';
 
 const Tab = createBottomTabNavigator();
 
-export default function App() {
+const App = () => {
   return (
     <NavigationContainer>
       <StatusBar style='auto' />
@@ -29,12 +28,4 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f00',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: SBar.currentHeight || 0,
-  },
-});
+export default App;
