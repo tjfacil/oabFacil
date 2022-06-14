@@ -11,7 +11,7 @@ import {
 
 import oabData from '../../data/oab.json';
 import Questao from '../models/Questao';
-import ListItem from './ListItem';
+import ListItem from '../components/ListItem';
 
 interface AreaItem {
   id: string;
@@ -72,8 +72,8 @@ const Areas = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 8,
-    backgroundColor: '#fff',
+    flex: 1,
+    backgroundColor: '#000',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
