@@ -6,6 +6,18 @@ import Questions from './src/routes/Questions';
 import Practice from './src/routes/Practice';
 import Stats from './src/routes/Stats';
 import { COLORS } from './src/utils/constants';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const QuestionsStack = createNativeStackNavigator();
+
+const QuestionsStackScreen = () => {
+  return (
+    <QuestionsStack.Navigator>
+      <QuestionsStack.Screen name='Questions' component={Questions} />
+      <QuestionsStack.Screen name='Areas' component={Areas} />
+    </QuestionsStack.Navigator>
+  );
+};
 
 const Tab = createBottomTabNavigator();
 
@@ -19,13 +31,24 @@ const App = () => {
           headerStyle: { backgroundColor: COLORS.grey },
         }}
       >
-        <Tab.Screen name='Areas' component={Areas} options={{title: 'Áreas'}} />
-        <Tab.Screen name='Questions' component={Questions} options={{title: 'Questões'}} />
-        <Tab.Screen name='Practice' component={Practice} options={{title: 'Simulado'}} />
-        <Tab.Screen name='Stats' component={Stats} options={{title: 'Estatísticas'}} />
+        <Tab.Screen
+          name='Questions'
+          component={QuestionsStackScreen}
+          options={{ title: 'Questões' }}
+        />
+        <Tab.Screen
+          name='Practice'
+          component={Practice}
+          options={{ title: 'Simulado' }}
+        />
+        <Tab.Screen
+          name='Stats'
+          component={Stats}
+          options={{ title: 'Estatísticas' }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
-}
+};
 
 export default App;
