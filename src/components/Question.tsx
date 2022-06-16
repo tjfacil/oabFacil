@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Button, Text, View } from 'react-native';
-import Option from '../models/Option';
 import QuestionModel from '../models/Question';
 import { COLORS } from '../utils/constants';
 import ListItem from './ListItem';

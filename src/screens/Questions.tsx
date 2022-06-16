@@ -4,15 +4,25 @@ import AreasModal, { AreaItem } from '../components/AreasModal';
 import QuestionModel from '../models/Question';
 import Question from '../components/Question';
 import { getRandomIntInRange } from '../utils/lib';
+import areasData from '../../data/areas.json';
 import questionsData from '../../data/oab.json';
 
 const Questions = () => {
+  const [allAreas, setAllAreas] = useState<AreaItem[]>([]);
   const [selectedAreas, setSelectedAreas] = useState<AreaItem[]>([]);
   const [showAreasModal, setShowAreasModal] = useState<boolean>(false);
   const [allQuestions, setAllQuestions] = useState<QuestionModel[]>([]);
   const [liveQuestion, setLiveQuestion] = useState<QuestionModel | undefined>(
     undefined
   );
+
+  useEffect(() => {
+    const areasList: AreaItem[] = [];
+    (areasData as string[]).forEach((area) => {
+      areasList.push({ id: area, name: area });
+    });
+    setAllAreas(areasList);
+  }, []);
 
   useEffect(() => {
     let questions = questionsData as QuestionModel[];
@@ -24,7 +34,7 @@ const Questions = () => {
 
   useEffect(() => {
     handleNextQuestion();
-  }, [allQuestions])
+  }, [allQuestions]);
 
   const filterSelectedAreas = (questions: QuestionModel[]): QuestionModel[] => {
     return questions.filter((question) => {
@@ -55,6 +65,10 @@ const Questions = () => {
     setSelectedAreas(selected);
   };
 
+  const handleClearAreas = () => {
+    setSelectedAreas([]);
+  };
+
   const handleNextQuestion = () => {
     const index = getRandomIntInRange(allQuestions.length);
     const question = allQuestions[index];
@@ -78,10 +92,12 @@ const Questions = () => {
         )}
       </View>
       <AreasModal
+        areas={allAreas}
         visible={showAreasModal}
         selectedAreas={selectedAreas}
-        handleSelectArea={handleSelectArea}
         setShowAreasModal={setShowAreasModal}
+        handleSelectArea={handleSelectArea}
+        handleClearAreas={handleClearAreas}
       />
     </View>
   );

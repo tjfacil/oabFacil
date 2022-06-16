@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,10 +5,10 @@ import {
   ListRenderItem,
   SafeAreaView,
   Modal,
-  Pressable,
+  View,
 } from 'react-native';
 import ListItem from './ListItem';
-import areasData from '../../data/areas.json';
+import Button from './Button';
 
 export interface AreaItem {
   id: string;
@@ -17,27 +16,22 @@ export interface AreaItem {
 }
 
 interface IProps {
+  areas: AreaItem[];
   visible: boolean;
   selectedAreas: AreaItem[];
-  handleSelectArea: (name: string) => void;
   setShowAreasModal: (show: boolean) => void;
+  handleSelectArea: (name: string) => void;
+  handleClearAreas: () => void;
 }
 
 const AreasModal = ({
+  areas,
   visible,
   selectedAreas,
-  handleSelectArea,
   setShowAreasModal,
+  handleSelectArea,
+  handleClearAreas
 }: IProps) => {
-  const [areas, setAreas] = useState<AreaItem[]>([]);
-
-  useEffect(() => {
-    const areasList: AreaItem[] = [];
-    (areasData as string[]).forEach((area) => {
-      areasList.push({ id: area, name: area });
-    });
-    setAreas(areasList);
-  }, []);
 
   const checkIfSelected = (item: AreaItem): boolean => {
     for (const area of selectedAreas) {
@@ -72,14 +66,11 @@ const AreasModal = ({
             extraData={selectedAreas}
           />
         </SafeAreaView>
-        <Pressable
-          style={styles.section}
-          onPress={() => {
-            setShowAreasModal(false);
-          }}
-        >
-          <Text>Salvar</Text>
-        </Pressable>
+
+        <View style={styles.section}>
+          <Button text='Salvar' onPress={() => setShowAreasModal(false)} />
+          <Button text='Limpar' onPress={handleClearAreas} />
+        </View>
       </SafeAreaView>
     </Modal>
   );
