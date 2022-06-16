@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Button, Text, View } from 'react-native';
-import AreasModal, { AreaItem } from '../components/AreasModal';
+import AreasModal, { AreaItem } from '../components/questions/AreasModal';
 import QuestionModel from '../models/Question';
-import Question from '../components/Question';
+import Question from '../components/questions/Question';
 import { getRandomIntInRange } from '../utils/lib';
 import areasData from '../../data/areas.json';
 import questionsData from '../../data/oab.json';

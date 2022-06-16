@@ -1,5 +1,5 @@
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { COLORS } from '../utils/constants';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { COLORS } from '../../utils/constants';
 
 interface IProps {
   text: string;

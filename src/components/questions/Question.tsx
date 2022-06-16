@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Button, Text, View } from 'react-native';
-import QuestionModel from '../models/Question';
-import { COLORS } from '../utils/constants';
-import ListItem from './ListItem';
+import QuestionModel from '../../models/Question';
+import { COLORS } from '../../utils/constants';
+import ListItem from '../UI/ListItem';
 
 interface IProps {
   question: QuestionModel;

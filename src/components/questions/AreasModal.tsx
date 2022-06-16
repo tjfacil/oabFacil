@@ -7,8 +7,8 @@ import {
   Modal,
   View,
 } from 'react-native';
-import ListItem from './ListItem';
-import Button from './Button';
+import ListItem from '../UI/ListItem';
+import Button from '../UI/Button';
 
 export interface AreaItem {
   id: string;
