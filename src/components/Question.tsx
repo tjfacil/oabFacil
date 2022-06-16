@@ -15,8 +15,8 @@ const Question = ({ question }: IProps) => {
   const [submitted, setSubmitted] = useState<boolean>(false);
 
   useEffect(() => {
-    setChoice('');
     checkAnswer();
+    setChoice('');
     setSubmitted(false);
   }, [question]);
 
@@ -24,6 +24,7 @@ const Question = ({ question }: IProps) => {
     for (const option of question.options) {
       if (option.correct === true) {
         setAnswer(option.letter);
+        return;
       }
     }
   };
@@ -34,15 +35,11 @@ const Question = ({ question }: IProps) => {
     }
   };
 
-  const handleSubmit = () => {
-    setSubmitted(true);
-  };
-
   const getBackgroundColor = (optionLetter: string): string => {
-    const isCorrect = choice === answer;
     if (optionLetter !== choice && optionLetter !== answer) {
       return COLORS.grey;
     }
+    const isCorrect = choice === answer;
     if (optionLetter === choice && isCorrect) {
       return COLORS.success;
     }
@@ -73,7 +70,7 @@ const Question = ({ question }: IProps) => {
       ))}
 
       <View>
-        <Button title='Conferir' onPress={handleSubmit} />
+        <Button title='Conferir' onPress={() => setSubmitted(true)} />
       </View>
     </View>
   );

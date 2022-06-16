@@ -8,9 +8,8 @@ import {
   Modal,
   Pressable,
 } from 'react-native';
-
+import ListItem from './ListItem';
 import areasData from '../../data/areas.json';
-import ListItem from '../components/ListItem';
 
 export interface AreaItem {
   id: string;
@@ -24,7 +23,7 @@ interface IProps {
   setShowAreasModal: (show: boolean) => void;
 }
 
-const Areas = ({
+const AreasModal = ({
   visible,
   selectedAreas,
   handleSelectArea,
@@ -107,4 +106,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Areas;
+export default AreasModal;

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Button, FlatList, Text, View } from 'react-native';
-import Areas, { AreaItem } from './Areas';
-
+import { StyleSheet, Button, Text, View } from 'react-native';
+import AreasModal, { AreaItem } from '../components/AreasModal';
 import questionsData from '../../data/oabpt.json';
 import QuestionModel from '../models/Question';
 import Question from '../components/Question';
@@ -51,7 +50,7 @@ const Questions = () => {
         {liveQuestion !== undefined && <Question question={liveQuestion} />}
       </View>
 
-      <Areas
+      <AreasModal
         visible={showAreasModal}
         selectedAreas={selectedAreas}
         handleSelectArea={handleSelectArea}
