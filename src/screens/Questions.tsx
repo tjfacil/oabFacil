@@ -1,22 +1,43 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Button, Text, View } from 'react-native';
 import AreasModal, { AreaItem } from '../components/AreasModal';
-import questionsData from '../../data/oabpt.json';
 import QuestionModel from '../models/Question';
 import Question from '../components/Question';
+import { getRandomIntInRange } from '../utils/lib';
+import questionsData from '../../data/oab.json';
 
 const Questions = () => {
   const [selectedAreas, setSelectedAreas] = useState<AreaItem[]>([]);
   const [showAreasModal, setShowAreasModal] = useState<boolean>(false);
+  const [allQuestions, setAllQuestions] = useState<QuestionModel[]>([]);
   const [liveQuestion, setLiveQuestion] = useState<QuestionModel | undefined>(
     undefined
   );
 
   useEffect(() => {
-    const questions = questionsData as QuestionModel[];
-    const question = questions[Math.floor(Math.random() * questions.length)];
-    setLiveQuestion(question);
-  }, []);
+    let questions = questionsData as QuestionModel[];
+    if (selectedAreas.length > 0) {
+      questions = filterSelectedAreas(questions);
+    }
+    setAllQuestions(questions);
+  }, [selectedAreas]);
+
+  useEffect(() => {
+    handleNextQuestion();
+  }, [allQuestions])
+
+  const filterSelectedAreas = (questions: QuestionModel[]): QuestionModel[] => {
+    return questions.filter((question) => {
+      for (const selectedArea of selectedAreas) {
+        for (const questionArea of question.areas) {
+          if (selectedArea.name === questionArea) {
+            return true;
+          }
+        }
+      }
+      return false;
+    });
+  };
 
   const handleSelectArea = (name: string) => {
     let selected = [...selectedAreas];
@@ -34,6 +55,12 @@ const Questions = () => {
     setSelectedAreas(selected);
   };
 
+  const handleNextQuestion = () => {
+    const index = getRandomIntInRange(allQuestions.length);
+    const question = allQuestions[index];
+    setLiveQuestion(question);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.section}>
@@ -45,11 +72,11 @@ const Questions = () => {
           onPress={() => setShowAreasModal(true)}
         />
       </View>
-
       <View style={styles.main}>
-        {liveQuestion !== undefined && <Question question={liveQuestion} />}
+        {liveQuestion !== undefined && (
+          <Question question={liveQuestion} nextQuestion={handleNextQuestion} />
+        )}
       </View>
-
       <AreasModal
         visible={showAreasModal}
         selectedAreas={selectedAreas}

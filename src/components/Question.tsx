@@ -7,9 +7,10 @@ import ListItem from './ListItem';
 
 interface IProps {
   question: QuestionModel;
+  nextQuestion: () => void;
 }
 
-const Question = ({ question }: IProps) => {
+const Question = ({ question, nextQuestion }: IProps) => {
   const [choice, setChoice] = useState<string>('');
   const [answer, setAnswer] = useState<string>('');
   const [submitted, setSubmitted] = useState<boolean>(false);
@@ -56,6 +57,7 @@ const Question = ({ question }: IProps) => {
     <View>
       <Text>Área: {question.areas.join(' ')}</Text>
       <Text>Prova: {question.filename.replace('.txt', '')}</Text>
+      <Text>Questão: {question.number}</Text>
       <Text>{question.enum}:</Text>
       {question.options.map((option) => (
         <ListItem
@@ -71,6 +73,7 @@ const Question = ({ question }: IProps) => {
 
       <View>
         <Button title='Conferir' onPress={() => setSubmitted(true)} />
+        <Button title='Próxima' onPress={() => nextQuestion()} />
       </View>
     </View>
   );
