@@ -1,20 +1,24 @@
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { COLORS } from '../utils/constants';
 
 interface IProps {
-  nome: string;
-  onPress: (nome: string) => void;
+  text: string;
+  onPress: (arg: string) => void;
   selected: boolean;
+  backgroundColor?: string;
 }
 
-const ListItem = (props: IProps) => {
-  const backgroundColor = props.selected ? '#55f' : '#999';
+const ListItem = ({ text, onPress, selected, backgroundColor }: IProps) => {
+  if (!backgroundColor) {
+    backgroundColor = selected ? COLORS.accent : COLORS.grey;
+  }
 
   return (
     <TouchableOpacity
       style={[styles.container, { backgroundColor }]}
-      onPress={() => props.onPress(props.nome)}
+      onPress={() => onPress(text)}
     >
-      <Text>{props.nome}</Text>
+      <Text>{text}</Text>
     </TouchableOpacity>
   );
 };
@@ -22,15 +26,11 @@ const ListItem = (props: IProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#999',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
     paddingVertical: 8,
     paddingHorizontal: 8,
-  },
-  selected: {
-    backgroundColor: '#55f',
   },
 });
 
