@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Button, Text, View } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import QuestionModel from '../../models/Question';
 import { COLORS } from '../../utils/constants';
+import QuestionText from '../UI/QuestionText';
 import ListItem from '../UI/ListItem';
+import Button from '../UI/Button';
 
 interface IProps {
   question: QuestionModel;
@@ -52,30 +54,86 @@ const Question = ({ question, nextQuestion }: IProps) => {
     return COLORS.grey;
   };
 
-  return (
-    <View>
-      <Text>Área: {question.areas.join(' ')}</Text>
-      <Text>Prova: {question.filename.replace('.txt', '')}</Text>
-      <Text>Questão: {question.number}</Text>
-      <Text>{question.enum}:</Text>
-      {question.options.map((option) => (
-        <ListItem
-          key={option.letter}
-          text={`${option.letter}) ${option.text}`}
-          onPress={() => handleChoice(option.letter)}
-          selected={option.letter === choice}
-          backgroundColor={
-            submitted ? getBackgroundColor(option.letter) : undefined
-          }
-        />
-      ))}
+  const questionHeader = (): JSX.Element => {
+    return (
+      <View style={styles.questionHeader}>
+        <View style={styles.questionHeaderData}>
+          <QuestionText
+            text={`Prova: ${question.filename.replace('.txt', '')}`}
+          />
+          <QuestionText text={`Questão: ${question.number}`} />
+        </View>
+      </View>
+    );
+  };
 
-      <View>
-        <Button title='Conferir' onPress={() => setSubmitted(true)} />
-        <Button title='Próxima' onPress={() => nextQuestion()} />
+  return (
+    <View style={styles.container}>
+      <View style={styles.questionContainer}>
+        {questionHeader()}
+        <ScrollView style={styles.questionText}>
+          <QuestionText text={`${question.enum}:`} />
+        </ScrollView>
+      </View>
+
+      <View style={styles.optionsContainer}>
+        {question.options.map((option) => (
+          <ListItem
+            key={option.letter}
+            text={`${option.letter}) ${option.text}`}
+            onPress={() => handleChoice(option.letter)}
+            selected={option.letter === choice}
+            backgroundColor={
+              submitted ? getBackgroundColor(option.letter) : undefined
+            }
+          />
+        ))}
+      </View>
+
+      <View style={styles.buttonsContainer}>
+        <Button text='Próxima' onPress={() => nextQuestion()} />
+        <Button text='Conferir' onPress={() => setSubmitted(true)} />
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.grey,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  questionContainer: {
+    flex: 2,
+  },
+  questionHeader: {
+    marginBottom: 16,
+  },
+  questionHeaderData: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  questionText: {
+    borderWidth: 1,
+    borderColor: COLORS.white,
+    borderRadius: 10,
+    padding: 16,
+  },
+  optionsContainer: {
+    flex: 4,
+    width: '100%',
+    justifyContent: 'center',
+  },
+  buttonsContainer: {
+    flex: 1,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+});
 
 export default Question;

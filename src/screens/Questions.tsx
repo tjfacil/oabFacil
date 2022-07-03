@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Button, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import AreasModal, { AreaItem } from '../components/questions/AreasModal';
 import QuestionModel from '../models/Question';
 import Question from '../components/questions/Question';
 import { getRandomIntInRange } from '../utils/lib';
 import areasData from '../../data/areas.json';
 import questionsData from '../../data/oab.json';
+import { COLORS } from '../utils/constants';
+import Button from '../components/UI/Button';
 
 const Questions = () => {
   const [allAreas, setAllAreas] = useState<AreaItem[]>([]);
@@ -78,19 +80,15 @@ const Questions = () => {
   return (
     <View style={styles.container}>
       <View style={styles.section}>
-        <Text style={styles.section}>
-          {selectedAreas.map((area) => area.name).join(' - ')}
-        </Text>
-        <Button
-          title='Escolher áreas'
-          onPress={() => setShowAreasModal(true)}
-        />
+        <Button text='Escolher áreas' onPress={() => setShowAreasModal(true)} />
       </View>
+
       <View style={styles.main}>
         {liveQuestion !== undefined && (
           <Question question={liveQuestion} nextQuestion={handleNextQuestion} />
         )}
       </View>
+
       <AreasModal
         areas={allAreas}
         visible={showAreasModal}
@@ -106,17 +104,18 @@ const Questions = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#555',
+    backgroundColor: COLORS.grey,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
   },
   section: {
     flex: 1,
-    width: '100%',
+    justifyContent: 'center',
   },
   main: {
-    flex: 6,
+    flex: 7,
+    width: '100%',
   },
 });
 

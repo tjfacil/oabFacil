@@ -1,5 +1,6 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { COLORS } from '../../utils/constants';
+import QuestionText from './QuestionText';
 
 interface IProps {
   text: string;
@@ -14,12 +15,15 @@ const ListItem = ({ text, onPress, selected, backgroundColor }: IProps) => {
   }
 
   return (
-    <TouchableOpacity
-      style={[styles.container, { backgroundColor }]}
-      onPress={() => onPress(text)}
-    >
-      <Text>{text}</Text>
-    </TouchableOpacity>
+    <Pressable style={styles.press} onPress={() => onPress(text)}>
+      <View style={styles.container}>
+        <ScrollView>
+          <View style={[styles.scroll, { backgroundColor }]}>
+            <QuestionText text={text} />
+          </View>
+        </ScrollView>
+      </View>
+    </Pressable>
   );
 };
 
@@ -29,8 +33,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    paddingVertical: 8,
-    paddingHorizontal: 8,
+    padding: 8,
+    marginBottom: 8,
+    borderBottomColor: COLORS.white,
+    borderBottomWidth: 1,
+  },
+  press: {
+    flex: 1,
+    width: '100%',
+  },
+  scroll: {
+    flex: 1,
+    width: '100%',
+    borderColor: COLORS.error,
   },
 });
 

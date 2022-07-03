@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from 'react-native';
 import Questions from './src/screens/Questions';
 import Practice from './src/screens/Practice';
 import Stats from './src/screens/Stats';
@@ -11,12 +11,13 @@ const Tab = createBottomTabNavigator();
 const App = () => {
   return (
     <>
-      <StatusBar style='auto' />
+      <StatusBar />
       <NavigationContainer>
         <Tab.Navigator
           screenOptions={{
-            tabBarStyle: { backgroundColor: COLORS.primary },
             headerStyle: { backgroundColor: COLORS.grey },
+            headerTintColor: COLORS.white,
+            tabBarStyle: { backgroundColor: COLORS.grey },
           }}
         >
           <Tab.Screen
