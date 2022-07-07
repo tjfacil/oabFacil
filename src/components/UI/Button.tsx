@@ -1,10 +1,6 @@
-import {
-  Pressable,
-  StyleSheet,
-  StyleProp,
-  Text,
-  ViewProps,
-} from 'react-native';
+import React from 'react';
+
+import { Pressable, StyleSheet, Text } from 'react-native';
 import { COLORS } from '../../utils/constants';
 
 interface IProps {
@@ -32,9 +28,9 @@ const buttonStyles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 175,
-    height: 60,
-    padding: 16,
+    width: 150,
+    height: 50,
+    padding: 8,
     borderWidth: 2,
     borderColor: COLORS.accent,
     borderRadius: 15,

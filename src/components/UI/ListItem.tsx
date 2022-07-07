@@ -1,4 +1,5 @@
-import { View, Pressable, ScrollView, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Pressable, StyleSheet } from 'react-native';
 import { COLORS } from '../../utils/constants';
 import QuestionText from './QuestionText';
 
@@ -15,15 +16,11 @@ const ListItem = ({ text, onPress, selected, backgroundColor }: IProps) => {
   }
 
   return (
-    <Pressable style={styles.press} onPress={() => onPress(text)}>
-      <View style={styles.container}>
-        <ScrollView>
-          <View style={[styles.scroll, { backgroundColor }]}>
-            <QuestionText text={text} />
-          </View>
-        </ScrollView>
-      </View>
-    </Pressable>
+    <View style={[styles.container, { backgroundColor }]}>
+      <Pressable style={styles.press} onPress={() => onPress(text)}>
+        <QuestionText text={text} />
+      </Pressable>
+    </View>
   );
 };
 
@@ -33,19 +30,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    padding: 8,
-    marginBottom: 8,
     borderBottomColor: COLORS.white,
     borderBottomWidth: 1,
   },
   press: {
     flex: 1,
     width: '100%',
-  },
-  scroll: {
-    flex: 1,
-    width: '100%',
-    borderColor: COLORS.error,
+    padding: 16,
+
   },
 });
 

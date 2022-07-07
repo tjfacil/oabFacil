@@ -1,10 +1,11 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import QuestionModel from '../../models/Question';
 import { COLORS } from '../../utils/constants';
 import QuestionText from '../UI/QuestionText';
-import ListItem from '../UI/ListItem';
 import Button from '../UI/Button';
+import Option from '../../models/Option';
 
 interface IProps {
   question: QuestionModel;
@@ -38,20 +39,18 @@ const Question = ({ question, nextQuestion }: IProps) => {
   };
 
   const getBackgroundColor = (optionLetter: string): string => {
-    if (optionLetter !== choice && optionLetter !== answer) {
+    if (submitted) {
+      const isCorrect = choice === answer;
+      if (optionLetter === choice) {
+        return isCorrect ? COLORS.success : COLORS.error;
+      }
+      if (optionLetter === answer && !isCorrect) {
+        return COLORS.accent;
+      }
       return COLORS.grey;
+    } else {
+      return optionLetter === choice ? COLORS.accent : COLORS.grey;
     }
-    const isCorrect = choice === answer;
-    if (optionLetter === choice && isCorrect) {
-      return COLORS.success;
-    }
-    if (optionLetter === choice && !isCorrect) {
-      return COLORS.error;
-    }
-    if (optionLetter === answer && !isCorrect) {
-      return COLORS.accent;
-    }
-    return COLORS.grey;
   };
 
   const questionHeader = (): JSX.Element => {
@@ -67,6 +66,25 @@ const Question = ({ question, nextQuestion }: IProps) => {
     );
   };
 
+  const questionOption = (option: Option): JSX.Element => {
+    const letter = option.letter;
+    const text = `${option.letter}) ${option.text}`;
+    const backgroundColor = getBackgroundColor(letter);
+
+    return (
+      <View style={styles.optionContainer} key={letter}>
+        <ScrollView
+          onTouchEnd={() => handleChoice(letter)}
+          style={[styles.scroll, { backgroundColor }]}
+        >
+          <View style={styles.optionText}>
+            <QuestionText text={text} />
+          </View>
+        </ScrollView>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.questionContainer}>
@@ -77,17 +95,7 @@ const Question = ({ question, nextQuestion }: IProps) => {
       </View>
 
       <View style={styles.optionsContainer}>
-        {question.options.map((option) => (
-          <ListItem
-            key={option.letter}
-            text={`${option.letter}) ${option.text}`}
-            onPress={() => handleChoice(option.letter)}
-            selected={option.letter === choice}
-            backgroundColor={
-              submitted ? getBackgroundColor(option.letter) : undefined
-            }
-          />
-        ))}
+        {question.options.map((option) => questionOption(option))}
       </View>
 
       <View style={styles.buttonsContainer}>
@@ -108,6 +116,7 @@ const styles = StyleSheet.create({
   },
   questionContainer: {
     flex: 2,
+    paddingHorizontal: 8,
   },
   questionHeader: {
     marginBottom: 16,
@@ -121,11 +130,28 @@ const styles = StyleSheet.create({
     borderColor: COLORS.white,
     borderRadius: 10,
     padding: 16,
+    marginBottom: 16,
   },
   optionsContainer: {
     flex: 4,
     width: '100%',
     justifyContent: 'center',
+  },
+  optionContainer: {
+    flex: 1,
+    borderBottomColor: COLORS.white,
+    borderBottomWidth: 1,
+    paddingBottom: 8,
+  },
+  scroll: {
+    flex: 1,
+    width: '100%',
+    borderWidth: 1,
+    padding: 8,
+  },
+  optionText: {
+    paddingBottom: 16,
+    marginBottom: 16,
   },
   buttonsContainer: {
     flex: 1,

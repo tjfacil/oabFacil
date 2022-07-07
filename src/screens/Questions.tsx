@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import AreasModal, { AreaItem } from '../components/questions/AreasModal';

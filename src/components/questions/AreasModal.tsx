@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,6 +10,7 @@ import {
 } from 'react-native';
 import ListItem from '../UI/ListItem';
 import Button from '../UI/Button';
+import { COLORS } from '../../utils/constants';
 
 export interface AreaItem {
   id: string;
@@ -30,9 +32,8 @@ const AreasModal = ({
   selectedAreas,
   setShowAreasModal,
   handleSelectArea,
-  handleClearAreas
+  handleClearAreas,
 }: IProps) => {
-
   const checkIfSelected = (item: AreaItem): boolean => {
     for (const area of selectedAreas) {
       if (area.name === item.name) {
@@ -57,19 +58,22 @@ const AreasModal = ({
   return (
     <Modal animationType='slide' transparent={true} visible={visible}>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.section}>Escolha as áreas das questões:</Text>
-        <SafeAreaView style={styles.mainSection}>
+        <View style={styles.title}>
+          <Text style={styles.titleText}>Escolha as áreas das questões:</Text>
+        </View>
+
+        <View style={styles.mainSection}>
           <FlatList
             data={areas}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             extraData={selectedAreas}
           />
-        </SafeAreaView>
+        </View>
 
-        <View style={styles.section}>
-          <Button text='Salvar' onPress={() => setShowAreasModal(false)} />
+        <View style={styles.buttons}>
           <Button text='Limpar' onPress={handleClearAreas} />
+          <Button text='Salvar' onPress={() => setShowAreasModal(false)} />
         </View>
       </SafeAreaView>
     </Modal>
@@ -79,21 +83,33 @@ const AreasModal = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#555',
+    backgroundColor: COLORS.grey,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
   },
+  title: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  titleText: {
+    color: COLORS.white,
+    fontSize: 20,
+  },
+  mainSection: {
+    flex: 5,
+    width: '75%',
+  },
   listItem: {
     backgroundColor: '#00f',
   },
-  mainSection: {
-    flex: 4,
-    width: '75%',
-  },
-  section: {
+  buttons: {
     flex: 1,
-    marginTop: 50,
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
 });
 
