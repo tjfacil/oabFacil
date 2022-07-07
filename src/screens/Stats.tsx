@@ -1,3 +1,4 @@
+import React from 'react';
 import { Text, View } from 'react-native';
 
 const Stats = () => {
@@ -5,7 +6,7 @@ const Stats = () => {
     <View>
       <Text>Suas estatísticas</Text>
     </View>
-  )
+  );
 };
 
 export default Stats;

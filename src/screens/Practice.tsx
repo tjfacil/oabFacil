@@ -1,5 +1,6 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import StartPracticeModal from '../components/practice/StartPracticeModal';
 import QuestionModel from '../models/Question';
 import questionsData from '../../data/oab.json';
