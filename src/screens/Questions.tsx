@@ -86,7 +86,11 @@ const Questions = () => {
 
       <View style={styles.main}>
         {liveQuestion !== undefined && (
-          <Question question={liveQuestion} nextQuestion={handleNextQuestion} />
+          <Question
+            question={liveQuestion}
+            practice={false}
+            nextQuestion={handleNextQuestion}
+          />
         )}
       </View>
 

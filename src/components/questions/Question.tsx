@@ -9,10 +9,19 @@ import Option from '../../models/Option';
 
 interface IProps {
   question: QuestionModel;
+  practice: boolean;
   nextQuestion: () => void;
+  questionNumber?: number;
+  setScore?: (correct: boolean) => void;
 }
 
-const Question = ({ question, nextQuestion }: IProps) => {
+const Question = ({
+  question,
+  practice,
+  nextQuestion,
+  questionNumber,
+  setScore,
+}: IProps) => {
   const [choice, setChoice] = useState<string>('');
   const [answer, setAnswer] = useState<string>('');
   const [submitted, setSubmitted] = useState<boolean>(false);
@@ -38,6 +47,13 @@ const Question = ({ question, nextQuestion }: IProps) => {
     }
   };
 
+  const handleNextQuestion = () => {
+    if (setScore !== undefined) {
+      setScore(answer === choice);
+    }
+    nextQuestion();
+  };
+
   const getBackgroundColor = (optionLetter: string): string => {
     if (submitted) {
       const isCorrect = choice === answer;
@@ -57,10 +73,16 @@ const Question = ({ question, nextQuestion }: IProps) => {
     return (
       <View style={styles.questionHeader}>
         <View style={styles.questionHeaderData}>
-          <QuestionText
-            text={`Prova: ${question.filename.replace('.txt', '')}`}
-          />
-          <QuestionText text={`Questão: ${question.number}`} />
+          {practice ? (
+            <QuestionText text={`Questão ${questionNumber}/80`} />
+          ) : (
+            <>
+              <QuestionText
+                text={`Prova: ${question.filename.replace('.txt', '')}`}
+              />
+              <QuestionText text={`Questão: ${question.number}`} />
+            </>
+          )}
         </View>
       </View>
     );
@@ -90,7 +112,7 @@ const Question = ({ question, nextQuestion }: IProps) => {
       <View style={styles.questionContainer}>
         {questionHeader()}
         <ScrollView style={styles.questionText}>
-          <QuestionText text={`${question.enum}:`} />
+          <QuestionText text={`${question.enum}`} />
         </ScrollView>
       </View>
 
@@ -99,8 +121,10 @@ const Question = ({ question, nextQuestion }: IProps) => {
       </View>
 
       <View style={styles.buttonsContainer}>
-        <Button text='Próxima' onPress={() => nextQuestion()} />
-        <Button text='Conferir' onPress={() => setSubmitted(true)} />
+        <Button text='Próxima' onPress={handleNextQuestion} />
+        {!practice && (
+          <Button text='Conferir' onPress={() => setSubmitted(true)} />
+        )}
       </View>
     </View>
   );
@@ -129,7 +153,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.white,
     borderRadius: 10,
-    padding: 16,
+    paddingHorizontal: 16,
     marginBottom: 16,
   },
   optionsContainer: {

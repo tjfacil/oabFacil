@@ -1,16 +1,18 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import StartPracticeModal from '../components/practice/StartPracticeModal';
+import StartPracticeModal from '../components/practice/PracticeModal';
 import QuestionModel from '../models/Question';
 import questionsData from '../../data/oab.json';
 import questionsIndex from '../../data/index.json';
 import Index from '../models/Index';
-import { shuffle } from '../utils/lib';
+import { buildPracticeSet } from '../utils/lib';
 import Question from '../components/questions/Question';
+import { COLORS } from '../utils/constants';
 
 const Practice = () => {
-  const [showStartModal, setShowStartModal] = useState<boolean>(true);
+  const [showModal, setShowModal] = useState<boolean>(true);
+  const [score, setScore] = useState<number>(0);
   const [allQuestions, setAllQuestions] = useState<QuestionModel[]>([]);
   const [questionsIndexes, setQuestionsIndexes] = useState<number[]>([]);
   const [liveIndex, setLiveIndex] = useState<number>(0);
@@ -19,40 +21,52 @@ const Practice = () => {
   );
 
   useEffect(() => {
-    setShowStartModal(true);
-    const questions = questionsData as QuestionModel[];
-    setAllQuestions(questions);
+    setShowModal(true);
+    setAllQuestions(questionsData as QuestionModel[]);
   }, []);
 
   useEffect(() => {
-    setShowStartModal(questionsIndexes.length === 0);
-    handleNextQuestion();
+    setShowModal(questionsIndexes.length === 0);
   }, [questionsIndexes]);
 
+  useEffect(() => {
+    const questionIndex = questionsIndexes[liveIndex];
+    setLiveQuestion(allQuestions[questionIndex]);
+  }, [liveIndex, questionsIndexes]);
+
   const handleStartPractice = () => {
-    const index = questionsIndex as Index;
-    const selectedQuestions = [];
-    for (const areaQuestions of Object.values(index)) {
-      shuffle(areaQuestions);
-      const selected = areaQuestions.slice(0, 4);
-      selectedQuestions.push(...selected);
-    }
-    setQuestionsIndexes(selectedQuestions);
+    const indexes = buildPracticeSet(questionsIndex as Index);
+    setQuestionsIndexes(indexes);
   };
 
   const handleNextQuestion = () => {
-    setLiveQuestion(allQuestions[liveIndex]);
-    setLiveIndex(liveIndex + 1);
+    if (liveIndex < 79) {
+      setLiveIndex(liveIndex + 1);
+    } else {
+      setShowModal(true);
+    }
+  };
+
+  const handleScore = (correct: boolean) => {
+    if (correct) {
+      setScore(score + 1);
+    }
   };
 
   return (
     <View style={styles.container}>
       {liveQuestion && (
-        <Question question={liveQuestion} nextQuestion={handleNextQuestion} />
+        <Question
+          question={liveQuestion}
+          practice={true}
+          nextQuestion={handleNextQuestion}
+          setScore={handleScore}
+          questionNumber={liveIndex + 1}
+        />
       )}
 
       <StartPracticeModal
-        visible={showStartModal}
+        visible={showModal}
         setShowModal={handleStartPractice}
       />
     </View>
@@ -62,7 +76,7 @@ const Practice = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#555',
+    backgroundColor: COLORS.grey,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
