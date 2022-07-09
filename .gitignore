@@ -13,4 +13,5 @@ web-build/
 # macOS
 .DS_Store
 
-data/
+data/areas
+data/backups
