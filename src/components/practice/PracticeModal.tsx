@@ -31,7 +31,7 @@ const PracticeModal = ({ visible, score, setShowModal }: IProps) => {
     const approved = score > 40;
     return (
       <>
-        <Text style={styles.text}>
+        <Text style={[styles.text, styles.title]}>
           {approved ? 'PARABÉNS' : 'Tente outra vez.'}
         </Text>
         <Text style={styles.text}>Sua pontuação</Text>

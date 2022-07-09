@@ -98,6 +98,7 @@ const Question = ({
         <ScrollView
           onTouchEnd={() => handleChoice(letter)}
           style={[styles.scroll, { backgroundColor }]}
+          bounces={true}
         >
           <View style={styles.optionText}>
             <QuestionText text={text} />
@@ -111,7 +112,7 @@ const Question = ({
     <View style={styles.container}>
       <View style={styles.questionContainer}>
         {questionHeader()}
-        <ScrollView style={styles.questionText}>
+        <ScrollView style={styles.questionText} bounces={true}>
           <QuestionText text={`${question.enum}`} />
         </ScrollView>
       </View>

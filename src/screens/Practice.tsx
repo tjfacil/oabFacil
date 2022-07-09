@@ -12,7 +12,7 @@ import { COLORS } from '../utils/constants';
 
 const Practice = () => {
   const [showModal, setShowModal] = useState<boolean>(true);
-  const [score, setScore] = useState<number>(0);
+  const [score, setScore] = useState<number | undefined>(undefined);
   const [allQuestions, setAllQuestions] = useState<QuestionModel[]>([]);
   const [questionsIndexes, setQuestionsIndexes] = useState<number[]>([]);
   const [liveIndex, setLiveIndex] = useState<number>(0);
@@ -37,6 +37,8 @@ const Practice = () => {
   const handleStartPractice = () => {
     const indexes = buildPracticeSet(questionsIndex as Index);
     setQuestionsIndexes(indexes);
+    setScore(0);
+    setLiveIndex(0);
   };
 
   const handleNextQuestion = () => {
@@ -49,7 +51,8 @@ const Practice = () => {
 
   const handleScore = (correct: boolean) => {
     if (correct) {
-      setScore(score + 1);
+      const _score = score || 0;
+      setScore(_score + 1);
     }
   };
 
@@ -68,6 +71,7 @@ const Practice = () => {
       <StartPracticeModal
         visible={showModal}
         setShowModal={handleStartPractice}
+        score={score}
       />
     </View>
   );
